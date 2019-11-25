@@ -810,6 +810,23 @@ SUBROUTINE SrvD_InputSolve( p_FAST, m_FAST, u_SrvD, y_ED, y_IfW, y_OpFM, y_BD, M
 
    u_SrvD%RotPwr    = y_ED%RotPwr
 
+   ! Senu:Equinor modification:
+   u_SrvD%PtfmTDxi  = y_ED%PtfmTDxi    ! Platform horizontal surge (translational) displacement (m/s)
+   u_SrvD%PtfmTDyi  = y_ED%PtfmTDyi    ! Platform horizontal sway (translational) displacement (m/s)
+   u_SrvD%PtfmTDzi  = y_ED%PtfmTDzi    ! Platform vertical heave (translational) displacement (m/s)
+   u_SrvD%PtfmRDxi  = y_ED%PtfmRDxi    ! Platform roll tilt angular (rotational) displacement (deg/s)
+   u_SrvD%PtfmRDyi  = y_ED%PtfmRDyi    ! Platform pitch tilt angular (rotational) displacement (deg/s)
+   u_SrvD%PtfmRDzi  = y_ED%PtfmRDzi    ! Platform yaw angular (rotational) displacement (deg/s)
+   u_SrvD%NcIMUTVxs = y_ED%NcIMUTVxs   ! Nacelle inertial measurement unit translational x velocity (absolute) (m/s)
+   u_SrvD%NcIMUTVys = y_ED%NcIMUTVys   ! Nacelle inertial measurement unit translational y velocity (absolute) (m/s)
+   u_SrvD%NcIMUTVzs = y_ED%NcIMUTVzs   ! Nacelle inertial measurement unit translational z velocity (absolute) (m/s)
+   u_SrvD%NcIMURVxs = y_ED%NcIMURVxs   ! Nacelle inertial measurement unit angular roll (rotational) velocity (absolute) (deg/s)
+   u_SrvD%NcIMURVys = y_ED%NcIMURVys   ! Nacelle inertial measurement unit angular pitch (rotational) velocity (absolute) (deg/s)
+   u_SrvD%NcIMURVzs = y_ED%NcIMURVzs   ! Nacelle inertial measurement unit angular yaw (rotational) velocity (absolute) (deg/s)
+   u_SrvD%NcIMUTAxs = y_ED%NcIMUTAxs   ! Nacelle inertial measurement unit translational x acceleration (absolute) (m/s^2)
+   u_SrvD%NcIMUTAys = y_ED%NcIMUTAys   ! Nacelle inertial measurement unit translational y acceleration (absolute) (m/s^2)
+   u_SrvD%NcIMUTAzs = y_ED%NcIMUTAzs   ! Nacelle inertial measurement unit translational z acceleration (absolute) (m/s^2)
+
    !   ! ServoDyn inputs from AeroDyn
    !IF ( p_FAST%CompAero == Module_AD ) THEN
    !ELSE
