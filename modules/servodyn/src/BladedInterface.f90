@@ -529,6 +529,7 @@ END IF
    dll_data%avrSWAP(64) = 0.0                               !> * Record 64: Maximum number of characters which can be returned in "OUTNAME" (-) [currently set to 0]
 ! Record 65 is output [see Retrieve_avrSWAP()]
 ! Records 66-68 are reserved
+   dll_data%avrSWAP(66) = 120                               ! Fix record 66 to be 120 (start of nacelle motions) ! Senu:Equinor controller change
 
    dll_data%avrSWAP(69) = u%RootMxc(1)                      !> * Record 69: Blade 1 root in-plane bending moment (Nm) [SrvD input]
    dll_data%avrSWAP(70) = u%RootMxc(2)                      !> * Record 70: Blade 2 root in-plane bending moment (Nm) [SrvD input]
@@ -572,6 +573,32 @@ END IF
 
          
 !> * Records 120-129: User-defined variables 1-10; ignored in ServoDyn
+
+   !Place the nacelle motions into the swap array - ! Senu:Equinor controller change
+   !Motions:
+   dll_data%avrSWAP(120) = u%PtfmTDxi
+   dll_data%avrSWAP(121) = u%PtfmTDyi
+   dll_data%avrSWAP(122) = u%PtfmTDzi
+   dll_data%avrSWAP(123) = u%PtfmRDxi
+   dll_data%avrSWAP(124) = u%PtfmRDyi
+   dll_data%avrSWAP(125) = u%PtfmRDzi
+
+   !Velocities:
+   dll_data%avrSWAP(126) = u%NcIMUTVxs
+   dll_data%avrSWAP(127) = u%NcIMUTVys
+   dll_data%avrSWAP(128) = u%NcIMUTVzs
+   dll_data%avrSWAP(129) = u%NcIMURVxs
+   dll_data%avrSWAP(130) = u%NcIMURVys
+   dll_data%avrSWAP(131) = u%NcIMURVzs
+
+   !Accelerations:
+   dll_data%avrSWAP(132) = u%NcIMUTAxs
+   dll_data%avrSWAP(133) = u%NcIMUTAys
+   dll_data%avrSWAP(134) = u%NcIMUTAzs
+   dll_data%avrSWAP(135) = u%NcIMURAxs
+   dll_data%avrSWAP(136) = u%NcIMURAys
+   dll_data%avrSWAP(137) = u%NcIMURAzs
+
 ! Records 130-142 are outputs [see Retrieve_avrSWAP()]   
 ! Records L1 and onward are outputs [see Retrieve_avrSWAP()]
    

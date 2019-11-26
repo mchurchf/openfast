@@ -322,6 +322,21 @@ typedef	^	InputType	ReKi	GenTrq_prev	-	-	-	"Electrical generator torque (from pr
 typedef	^	InputType	TMD_InputType	NTMD	-	-	-	"TMD module inputs - nacelle"	-
 typedef	^	InputType	TMD_InputType	TTMD	-	-	-	"TMD module inputs - tower"	-
 typedef	^	InputType	SiKi	SuperController	{:}	-	-	"A swap array: used to pass input data to the DLL controller from the supercontroller"	-
+typedef ^       InputType       ReKi    PtfmTDxi        -       -       -       "Platform horizontal surge (translational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition)" m
+typedef ^       InputType       ReKi    PtfmTDyi        -       -       -       "Platform horizontal sway (translational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition)" m
+typedef ^       InputType       ReKi    PtfmTDzi        -       -       -       "Platform vertical heave (translational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition)" m
+typedef ^       InputType       ReKi    PtfmRDxi        -       -       -       "Platform roll tilt angular (rotational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition)" deg
+typedef ^       InputType       ReKi    PtfmRDyi        -       -       -       "Platform pitch tilt angular (rotational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition)" deg
+typedef ^       InputType       ReKi    PtfmRDzi        -       -       -       "Platform yaw angular (rotational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition)" deg
+typedef ^       InputType       ReKi    NcIMUTVxs       -       -       -       "Nacelle inertial measurement unit translational x velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition)" m/s
+typedef ^       InputType       ReKi    NcIMUTVys       -       -       -       "Nacelle inertial measurement unit translational y velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition)" m/s
+typedef ^       InputType       ReKi    NcIMUTVzs       -       -       -       "Nacelle inertial measurement unit translational z velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition)" m/s
+typedef ^       InputType       ReKi    NcIMURVxs       -       -       -       "Nacelle inertial measurement unit angular roll (rotational) velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition)" rad/s
+typedef ^       InputType       ReKi    NcIMURVys       -       -       -       "Nacelle inertial measurement unit angular pitch (rotational) velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition)" rad/s
+typedef ^       InputType       ReKi    NcIMURVzs       -       -       -       "Nacelle inertial measurement unit angular yaw (rotational) velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition)" rad/s
+typedef ^       InputType       ReKi    NcIMUTAxs       -       -       -       "Nacelle inertial measurement unit translational x acceleration (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition)" m/s^2
+typedef ^       InputType       ReKi    NcIMUTAys       -       -       -       "Nacelle inertial measurement unit translational y acceleration (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition)" m/s^2
+typedef ^       InputType       ReKi    NcIMUTAzs       -       -       -       "Nacelle inertial measurement unit translational z acceleration (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition)" m/s^2
 
 # ..... Outputs ...................................................................................................................
 # Define outputs that are contained on the mesh here:

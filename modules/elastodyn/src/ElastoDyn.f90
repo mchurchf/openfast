@@ -1761,7 +1761,26 @@ END IF
    y%NcIMURAys = m%AllOuts(NcIMURAys)*D2R                  ! Nacelle nodding acceleration (rad/s^2)
    y%NcIMURAzs = m%AllOuts(NcIMURAzs)*D2R                  ! Nacelle yaw     acceleration (rad/s^2) -- this is in the shaft (tilted) coordinate system, instead of the nacelle (nontilted) coordinate system
    
-               
+   ! Senu:Equinor modification (per Bjorn using FAST manual for ElastDyn output):
+   y%PtfmTDxi = m%AllOuts(PtfmTDxi)        ! Platform horizontal surge (translational) displacement (m)
+   y%PtfmTDyi = m%AllOuts(PtfmTDyi)        ! Platform horizontal sway (translational) displacement (m)
+   y%PtfmTDzi = m%AllOuts(PtfmTDzi)        ! Platform vertical heave (translational) displacement (m)
+   y%PtfmRDxi = m%AllOuts(PtfmRDxi)        ! Platform roll tilt angular (rotational) displacement (deg)
+   y%PtfmRDyi = m%AllOuts(PtfmRDyi)        ! Platform pitch tilt angular (rotational) displacement (deg)
+   y%PtfmRDzi = m%AllOuts(PtfmRDzi)        ! Platform yaw angular (rotational) displacement (deg)
+   y%NcIMUTVxs = m%AllOuts(NcIMUTVxs)      ! Nacelle inertial measurement unit translational x velocity (absolute) (m/s)
+   y%NcIMUTVys = m%AllOuts(NcIMUTVys)      ! Nacelle inertial measurement unit translational y velocity (absolute) (m/s)
+   y%NcIMUTVzs = m%AllOuts(NcIMUTVzs)      ! Nacelle inertial measurement unit translational z velocity (absolute) (m/s)
+   y%NcIMURVxs = m%AllOuts(NcIMURVxs)      ! Nacelle inertial measurement unit angular x velocity (absolute) (deg/s)
+   y%NcIMURVys = m%AllOuts(NcIMURVys)      ! Nacelle inertial measurement unit angular y velocity (absolute) (deg/s)
+   y%NcIMURVzs = m%AllOuts(NcIMURVzs)      ! Nacelle inertial measurement unit angular z velocity (absolute) (deg/s)
+   y%NcIMUTAxs = m%AllOuts(NcIMUTAxs)      ! Nacelle inertial measurement unit translational x acceleration (absolute) (m/s^2)
+   y%NcIMUTAys = m%AllOuts(NcIMUTAys)      ! Nacelle inertial measurement unit translational y acceleration (absolute) (m/s^2)
+   y%NcIMUTAzs = m%AllOuts(NcIMUTAzs)      ! Nacelle inertial measurement unit translational z acceleration (absolute) (m/s^2)
+   y%NcIMUTAxs = m%AllOuts(NcIMURAxs)      ! Nacelle inertial measurement unit angular x acceleration (absolute) (deg/s^2)
+   y%NcIMUTAys = m%AllOuts(NcIMURAys)      ! Nacelle inertial measurement unit angular y acceleration (absolute) (deg/s^2)
+   y%NcIMUTAzs = m%AllOuts(NcIMURAzs)      ! Nacelle inertial measurement unit angular z acceleration (absolute) (deg/s^2)
+
    RETURN
    
 

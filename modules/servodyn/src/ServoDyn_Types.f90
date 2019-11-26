@@ -343,6 +343,21 @@ IMPLICIT NONE
     TYPE(TMD_InputType)  :: NTMD      !< TMD module inputs - nacelle [-]
     TYPE(TMD_InputType)  :: TTMD      !< TMD module inputs - tower [-]
     REAL(SiKi) , DIMENSION(:), ALLOCATABLE  :: SuperController      !< A swap array: used to pass input data to the DLL controller from the supercontroller [-]
+    REAL(ReKi)  :: PtfmTDxi      !< Platform horizontal surge (translational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition) [m]
+    REAL(ReKi)  :: PtfmTDyi      !< Platform horizontal sway (translational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition) [m]
+    REAL(ReKi)  :: PtfmTDzi      !< Platform vertical heave (translational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition) [m]
+    REAL(ReKi)  :: PtfmRDxi      !< Platform roll tilt angular (rotational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition) [deg]
+    REAL(ReKi)  :: PtfmRDyi      !< Platform pitch tilt angular (rotational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition) [deg]
+    REAL(ReKi)  :: PtfmRDzi      !< Platform yaw angular (rotational) displacement, sent to Bladed DLL (Senu:Equinor Controller Addition) [deg]
+    REAL(ReKi)  :: NcIMUTVxs      !< Nacelle inertial measurement unit translational x velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition) [m/s]
+    REAL(ReKi)  :: NcIMUTVys      !< Nacelle inertial measurement unit translational y velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition) [m/s]
+    REAL(ReKi)  :: NcIMUTVzs      !< Nacelle inertial measurement unit translational z velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition) [m/s]
+    REAL(ReKi)  :: NcIMURVxs      !< Nacelle inertial measurement unit angular roll (rotational) velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition) [rad/s]
+    REAL(ReKi)  :: NcIMURVys      !< Nacelle inertial measurement unit angular pitch (rotational) velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition) [rad/s]
+    REAL(ReKi)  :: NcIMURVzs      !<  Nacelle inertial measurement unit angular yaw (rotational) velocity (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition) [rad/s]
+    REAL(ReKi)  :: NcIMUTAxs      !< Nacelle inertial measurement unit translational x acceleration (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition) [m/s^2]
+    REAL(ReKi)  :: NcIMUTAys      !< Nacelle inertial measurement unit translational y acceleration (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition) [m/s^2]
+    REAL(ReKi)  :: NcIMUTAzs      !< Nacelle inertial measurement unit translational z acceleration (absolute), sent to Bladed DLL (Senu:Equinor Controller Addition) [m/s^2]
   END TYPE SrvD_InputType
 ! =======================
 ! =========  SrvD_OutputType  =======
