@@ -231,7 +231,7 @@ void fast::OpenFAST::step() {
      // this advances the states, calls CalcOutput, and solves for next inputs. Predictor-corrector loop is imbeded here:
      // (note OpenFOAM could do subcycling around this step)
 
-     //writeVelocityData(velNodeDataFile, iTurb, nt_global, cDriver_Input_from_FAST[iTurb], cDriver_Output_to_FAST[iTurb]);
+     writeVelocityData(velNodeDataFile, iTurb, nt_global, cDriver_Input_from_FAST[iTurb], cDriver_Output_to_FAST[iTurb]);
 
      if ( isDebug() ) {
 
@@ -995,7 +995,7 @@ void fast::OpenFAST::writeVelocityData(hid_t h5File, int iTurb, int iTimestep, O
     tmpVelData[iNode*6 + 4] = oData.v[iNode];
     tmpVelData[iNode*6 + 5] = oData.w[iNode];
   }
-  
+
   hid_t dset_id = H5Dopen2(h5File, ("/turbine" + std::to_string(iTurb)).c_str(), H5P_DEFAULT);
   hid_t dspace_id = H5Dget_space(dset_id);
   H5Sselect_hyperslab(dspace_id, H5S_SELECT_SET, start, NULL, count, NULL);
