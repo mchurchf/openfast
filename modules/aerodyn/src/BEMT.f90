@@ -162,7 +162,6 @@ subroutine BEMT_SetParameters( InitInp, p, errStat, errMsg )
    p%UA_Flag        = InitInp%UA_Flag   
    p%DBEMT_Mod      = InitInp%DBEMT_Mod
 
-   
    allocate ( p%chord(p%numBladeNodes, p%numBlades), STAT = errStat2 )
    if ( errStat2 /= 0 ) then
       call SetErrStat( ErrID_Fatal, 'Error allocating memory for p%chord.', errStat, errMsg, RoutineName )
@@ -201,6 +200,8 @@ subroutine BEMT_SetParameters( InitInp, p, errStat, errMsg )
       do i=1,p%numBladeNodes
          p%chord(i,j)        = InitInp%chord(i,j)
          p%tipLossConst(i,j) = p%numBlades*(InitInp%zTip    (j) - InitInp%zLocal(i,j)) / (2.0*InitInp%zLocal(i,j))
+        !PRINT *, 'j = ', j, ' i = ', i, ': InitInp%zLocal(i,j) = ', InitInp%zLocal(i,j)
+         PRINT *, ' '
          p%hubLossConst(i,j) = p%numBlades*(InitInp%zLocal(i,j) - InitInp%zHub    (j)) / (2.0*InitInp%zHub    (j))
       end do
    end do
