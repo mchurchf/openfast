@@ -452,6 +452,15 @@ YawPosCom  = 0.0
 YawRateCom = 0.0
 
 
+WRITE(*,*) "UserYawCont:"
+WRITE(*,*) "   ZTime = ", ZTime
+WRITE(*,*) "   YawPosCom = ", YawPosCom
+WRITE(*,*) "   YawRateCom = ", YawRateCom
+WRITE(*,*) "   WindDir = ", WindDir
+WRITE(*,*) "   NumBl = " , NumBl
+
+
+
 
 RETURN
 END SUBROUTINE UserYawCont
