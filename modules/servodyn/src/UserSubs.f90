@@ -426,6 +426,7 @@ SUBROUTINE UserYawCont ( YawPos, YawRate, WindDir, YawError, NumBl, ZTime, DT, D
 
 
 USE                             Precision
+USE                             NWTC_Library
 
 
 IMPLICIT                        NONE
@@ -448,16 +449,116 @@ CHARACTER(1024), INTENT(IN ) :: DirRoot                                         
 
 
 
-YawPosCom  = 0.0
-YawRateCom = 0.0
+   ! Local Variables:
+REAL(ReKi)                   :: WindDirF
+REAL(ReKi)                   :: CosWindDir
+REAL(ReKi)                   :: SinWindDir
+REAL(ReKi), SAVE             :: CosWindDirF
+REAL(ReKi), SAVE             :: SinWindDirF
+REAL(ReKi), SAVE             :: YawPosComLast
+REAL(ReKi), SAVE             :: YawPosDesired
+REAL(ReKi)                   :: YawDelta
+REAL(ReKi)                   :: Error1
+REAL(ReKi)                   :: Error2
+REAL(ReKi), PARAMETER        :: PIby180 = 0.017453292519943
+REAL(ReKi), PARAMETER        :: C = 35.0
+REAL(ReKi), PARAMETER        :: Deadband = 8.0 * PIby180
+REAL(ReKi)                   :: Alpha
+LOGICAL, SAVE                :: Maneuvering
 
 
-WRITE(*,*) "UserYawCont:"
-WRITE(*,*) "   ZTime = ", ZTime
-WRITE(*,*) "   YawPosCom = ", YawPosCom
-WRITE(*,*) "   YawRateCom = ", YawRateCom
-WRITE(*,*) "   WindDir = ", WindDir
-WRITE(*,*) "   NumBl = " , NumBl
+
+
+!WRITE(*,*) "UserYawCont:"
+!WRITE(*,*) "   ZTime = ", ZTime
+!WRITE(*,*) "   DT = ", DT
+
+
+! Set the commanded yaw rate.
+YawRateCom = 0.3 * PIby180
+
+
+! Set the time constant of the first-order wind-direction filter.
+! So that at the first time step, the filtered wind direction is 
+! initialized to the actual wind direction, set the time constant
+! initially to zero.  Every time step after that, set it as normally
+! desired.
+Alpha = 0.0
+If (ZTime > 0.0) THEN
+   Alpha = DT/(DT+C)
+END IF
+
+
+! To deal with winds that are oscillating across the +/-pi boundary,
+! split the wind into its x and y components, and filter those
+! independently, and then put them back together.
+! - split into components
+CosWindDir = COS(WindDir)
+SinWindDir = SIN(WindDir)
+
+! - filter
+CosWindDirF = Alpha*CosWindDirF + (1.0 - Alpha)*CosWindDir
+SinWindDirF = Alpha*SinWindDirF + (1.0 - Alpha)*SinWindDir
+
+! - get filtered direction
+WindDirF = ATAN2(SinWindDirF,CosWindDirF)
+
+
+! Compute the difference between the filtered wind direction and the
+! current yaw setting, which is the yaw error of the control system
+!Error1 = WindDirF - YawPos
+Error1 = YawError - WindDir + WindDirF
+IF (Error1 > PI) THEN
+   Error1 = Error1 - 2.0*PI
+ELSE IF (Error1 < -PI) THEN
+   Error1 = Error1 + 2.0*PI
+END IF
+
+
+! Set the commanded yaw.  
+IF (ZTime == 0.0) THEN
+   YawPosDesired = YawPos
+   YawPosComLast = YawPos
+   Maneuvering = .FALSE.
+ELSE
+
+   Error2 = YawPosDesired-YawPosComLast
+   If (Error2 > PI) THEN
+      Error2 = Error2 - 2.0*PI
+   ELSE IF (Error2 < -PI) THEN
+      Error2 = Error2 + 2.0*PI
+   END IF
+
+   YawDelta = SIGN(1.0,Error2)*MIN(YawRateCom*DT,ABS(Error2))
+
+   IF ((ABS(Error1) > DeadBand) .AND. (Maneuvering == .FALSE.)) THEN
+     !YawPosDesired = WindDirF
+      YawPosDesired = YawPos + Error1
+      Maneuvering = .TRUE.
+      YawPosComLast = YawPosComLast + YawDelta
+   ELSE IF (Maneuvering == .TRUE.) THEN
+      YawPosComLast = YawPosComLast + YawDelta
+   END IF
+
+   IF (ABS(YawPosDesired-YawPosComLast) < 1.0E-3) THEN
+      Maneuvering = .FALSE.
+   END IF
+END IF
+
+
+YawPosCom = YawPosComLast
+
+!WRITE(*,*) "   Maneuvering = ", Maneuvering
+!WRITE(*,*) "   YawPos = ", YawPos / PIby180
+!WRITE(*,*) "   YawPosCom = ", YawPosCom * 180.0/PI
+!WRITE(*,*) "   YawRate = ", YawRate * 180.0/PI
+!WRITE(*,*) "   YawRateCom = ", YawRateCom * 180.0/PI
+!WRITE(*,*) "   WindDir = ", WindDir * 180.0/PI
+!WRITE(*,*) "   WindDirF = ", WindDirF * 180.0/PI
+!WRITE(*,*) "   YawError = ", YawError * 180.0/PI
+!WRITE(*,*) "   Error = ", Error1 * 180.0/PI
+!WRITE(*,*) "   Alpha = " , Alpha
+
 
 
 
