@@ -1045,7 +1045,7 @@ SUBROUTINE ExtInfw_CreateActForceBladeTowerNodes(InitOut_AD, p_ExtInfw, u_ExtInf
    REAL(ReKi), ALLOCATABLE                 :: pUniform(:)
    REAL(ReKi), ALLOCATABLE                 :: cByS(:)
    REAL(ReKi), ALLOCATABLE                 :: e(:)
-   REAL(ReKi)                              :: eSum, eTol
+   REAL(ReKi)                              :: eSum, eTol, a
    REAL(ReKi)                              :: bladeRoot, bladeTip, rInterp
    INTEGER(IntKi)                          :: counter
    REAL(ReKi)                              :: dRforceNodes ! Uniform distance between two consecutive force nodes
@@ -1090,10 +1090,10 @@ SUBROUTINE ExtInfw_CreateActForceBladeTowerNodes(InitOut_AD, p_ExtInfw, u_ExtInf
    p_ExtInfw%forceBldRnodes = pUniform
 
    if (p_ExtInfw%NodeClusterType .eq. 0) then
-       print*, "Using uniform blade force node clustering."
-      !do i = 1, p_ExtInfw%nNodesForceBlade
-      !    print*, "r(",i,") = ", pUniform(i)
-      !end do
+       CALL WrScr("Using uniform blade force node spacing")
+       do i = 1, p_ExtInfw%nNodesForceBlade
+           print*, i, ": r = ", pUniform(i)
+       end do
    end if
 
 
@@ -1112,6 +1112,10 @@ SUBROUTINE ExtInfw_CreateActForceBladeTowerNodes(InitOut_AD, p_ExtInfw, u_ExtInf
        ! For chord-based clustering (increase resolution in regions of decreased chord), an iterative solution to the grid spacing is used.
        ! The initial guess to the spacing is uniform spacing, so start with that.
        pNonUniform = pUniform
+       CALL WrScr("Starting with uniform blade force node spacing")
+       do i = 1, p_ExtInfw%nNodesForceBlade
+           print*, i, ": r = ", pNonUniform(i)
+       end do
 
        ! Get the chord at the initial force points.
        call ExtInfw_InterpolateForceNodesChord(initOut_AD, p_ExtInfw, u_ExtInfw, ErrStat2, ErrMsg2)
@@ -1127,9 +1131,16 @@ SUBROUTINE ExtInfw_CreateActForceBladeTowerNodes(InitOut_AD, p_ExtInfw, u_ExtInf
           !set the non-uniform spacing to ds = (sum(ds^) / sum(c^)) * c^, where
           !the ^ denotes from the last iteration.  To begin the iteration, we
           !use ds = uniform.
-          sNonUniform = (p_ExtInfw%BladeLength)*cNonUniform/(sum(cNonUniform(2:p_ExtInfw%nNodesForceBlade-1)) + 0.5*(cNonUniform(1)+cNonUniform(p_ExtInfw%nNodesForceBlade)))
+          a = (p_ExtInfw%BladeLength) / (sum(cNonUniform(2:p_ExtInfw%nNodesForceBlade-1)) + 0.5*(cNonUniform(1)+cNonUniform(p_ExtInfw%nNodesForceBlade)))
+          sNonUniform = a*cNonUniform
+          print*,"a = ",a
+
+          do i = 1, p_ExtInfw%nNodesForceBlade
+             print*, "c = ",cNonUniform(i), "s = ", sNonUniform(i)
+          end do
 
           ! set the new blade points based on the new ds.
+          pNonUniform(1) = 0.0
           do i = 2, p_ExtInfw%nNodesForceBlade
              pNonUniform(i) = pNonUniform(i-1) + 0.5*(sNonUniform(i-1) + sNonUniform(i))
           end do
@@ -1153,8 +1164,12 @@ SUBROUTINE ExtInfw_CreateActForceBladeTowerNodes(InitOut_AD, p_ExtInfw, u_ExtInf
 
        end do
 
-       CALL WrScr("Using chord-scaled blade force node clustering")
+       CALL WrScr("Using chord-scaled blade force node spacing")
        CALL WrScr(" -converged to "//trim(Num2LStr(eSum))//" in "//trim(Num2LStr(counter))//" iterations.")
+
+       do i = 1, p_ExtInfw%nNodesForceBlade
+           print*, i,": r = ", pNonUniform(i), " c = ", cNonUniform(i), "c/s = ",cByS(i)
+       end do
    end if
 
 
